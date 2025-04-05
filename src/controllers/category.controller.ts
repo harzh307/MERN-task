@@ -107,15 +107,17 @@ export const updateCategory = async (req: Request, res: Response) => {
 
     // Update category
     if (name) category.name = name;
-    if (status === "active" || status === "inactive") {
-      category.status = status;
-      // Update all child categories status
-      await Category.updateMany({ parent: id }, { status });
-    } else {
-      return res.status(400).json({
-        status: "error",
-        message: "Invalid status",
-      });
+    if (status) {
+      if (status === "active" || status === "inactive") {
+        category.status = status;
+        // Update all child categories status
+        await Category.updateMany({ parent: id }, { status });
+      } else {
+        return res.status(400).json({
+          status: "error",
+          message: "Invalid status",
+        });
+      }
     }
 
     await category.save();

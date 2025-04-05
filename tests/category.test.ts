@@ -21,10 +21,10 @@ describe("Category Management", () => {
     authToken = loginResponse.body.token;
   });
 
-  describe("POST /api/category", () => {
+  describe("POST /api/categories", () => {
     it("should create a new category", async () => {
       const response = await request(app)
-        .post("/api/category")
+        .post("/api/categories")
         .set("Authorization", `Bearer ${authToken}`)
         .send({ name: "Test Category" })
         .expect(201);
@@ -37,13 +37,13 @@ describe("Category Management", () => {
     it("should create a nested category", async () => {
       // Create parent category
       const parentResponse = await request(app)
-        .post("/api/category")
+        .post("/api/categories")
         .set("Authorization", `Bearer ${authToken}`)
         .send({ name: "Parent Category" });
 
       // Create child category
       const response = await request(app)
-        .post("/api/category")
+        .post("/api/categories")
         .set("Authorization", `Bearer ${authToken}`)
         .send({
           name: "Child Category",
@@ -59,17 +59,17 @@ describe("Category Management", () => {
     });
   });
 
-  describe("GET /api/category", () => {
+  describe("GET /api/categories", () => {
     it("should get categories in tree structure", async () => {
       // Create parent category
       const parentResponse = await request(app)
-        .post("/api/category")
+        .post("/api/categories")
         .set("Authorization", `Bearer ${authToken}`)
         .send({ name: "Parent Category" });
 
       // Create child category
       await request(app)
-        .post("/api/category")
+        .post("/api/categories")
         .set("Authorization", `Bearer ${authToken}`)
         .send({
           name: "Child Category",
@@ -77,7 +77,7 @@ describe("Category Management", () => {
         });
 
       const response = await request(app)
-        .get("/api/category")
+        .get("/api/categories")
         .set("Authorization", `Bearer ${authToken}`)
         .expect(200);
 
@@ -87,16 +87,16 @@ describe("Category Management", () => {
     });
   });
 
-  describe("PUT /api/category/:id", () => {
+  describe("PUT /api/categories/:id", () => {
     it("should update category name", async () => {
       // Create category
       const createResponse = await request(app)
-        .post("/api/category")
+        .post("/api/categories")
         .set("Authorization", `Bearer ${authToken}`)
         .send({ name: "Test Category" });
 
       const response = await request(app)
-        .put(`/api/category/${createResponse.body.data.category._id}`)
+        .put(`/api/categories/${createResponse.body.data.category._id}`)
         .set("Authorization", `Bearer ${authToken}`)
         .send({ name: "Updated Category" })
         .expect(200);
@@ -108,13 +108,13 @@ describe("Category Management", () => {
     it("should update category status and propagate to children", async () => {
       // Create parent category
       const parentResponse = await request(app)
-        .post("/api/category")
+        .post("/api/categories")
         .set("Authorization", `Bearer ${authToken}`)
         .send({ name: "Parent Category" });
 
       // Create child category
       await request(app)
-        .post("/api/category")
+        .post("/api/categories")
         .set("Authorization", `Bearer ${authToken}`)
         .send({
           name: "Child Category",
@@ -123,7 +123,7 @@ describe("Category Management", () => {
 
       // Update parent status
       await request(app)
-        .put(`/api/category/${parentResponse.body.data.category._id}`)
+        .put(`/api/categories/${parentResponse.body.data.category._id}`)
         .set("Authorization", `Bearer ${authToken}`)
         .send({ status: "inactive" });
 
@@ -136,17 +136,17 @@ describe("Category Management", () => {
     });
   });
 
-  describe("DELETE /api/category/:id", () => {
+  describe("DELETE /api/categories/:id", () => {
     it("should delete category and reassign children", async () => {
       // Create grandparent category
       const grandparentResponse = await request(app)
-        .post("/api/category")
+        .post("/api/categories")
         .set("Authorization", `Bearer ${authToken}`)
         .send({ name: "Grandparent Category" });
 
       // Create parent category
       const parentResponse = await request(app)
-        .post("/api/category")
+        .post("/api/categories")
         .set("Authorization", `Bearer ${authToken}`)
         .send({
           name: "Parent Category",
@@ -155,7 +155,7 @@ describe("Category Management", () => {
 
       // Create child category
       await request(app)
-        .post("/api/category")
+        .post("/api/categories")
         .set("Authorization", `Bearer ${authToken}`)
         .send({
           name: "Child Category",
@@ -164,7 +164,7 @@ describe("Category Management", () => {
 
       // Delete parent category
       await request(app)
-        .delete(`/api/category/${parentResponse.body.data.category._id}`)
+        .delete(`/api/categories/${parentResponse.body.data.category._id}`)
         .set("Authorization", `Bearer ${authToken}`)
         .expect(204);
 
