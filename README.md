@@ -93,5 +93,7 @@ All endpoints use a centralized error handling middleware that returns appropria
    ```bash
    docker-compose -f docker-compose.prod.yml up -d
    ```
-
+## Postman Collection
+You can find the Postman collection for testing the API endpoints here:
+[MERN-Task Postman Collection](https://github.com/harzh307/MERN-task/blob/main/MERN-Task.postman_collection.json)
 Make sure to set up these files with appropriate values before running the containers.
