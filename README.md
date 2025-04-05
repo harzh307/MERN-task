@@ -40,7 +40,7 @@ Authorization: Bearer <token>
   ```json
   {
     "name": "string",
-    "status": "active"||"inactive"
+    "status": "inactive"
   }
   ```
 
@@ -59,7 +59,7 @@ Authorization: Bearer <token>
   ```json
   {
     "name": "string",
-    "status": "active"||"inactive"
+    "status": "active"
   }
   ```
 
