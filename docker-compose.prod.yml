@@ -44,9 +44,6 @@ services:
       resources:
         limits:
           memory: 1G
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
 
 networks:
   mern-network:

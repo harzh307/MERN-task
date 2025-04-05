@@ -87,88 +87,11 @@ All endpoints use a centralized error handling middleware that returns appropria
 - Token format: `Bearer <token>`
 
 ## Docker Commands
-
-### Development Environment
-
-1. **Build the development image**:
-   ```bash
-   docker build -t mern-task-dev .
-   ```
-
-2. **Run the development container**:
-   ```bash
-   docker-compose up
-   ```
-
-3. **Run the development container in detached mode**:
-   ```bash
-   docker-compose up -d
-   ```
-
-4. **Stop the development container**:
-   ```bash
-   docker-compose down
-   ```
-
 ### Production Environment
 
-1. **Build the production image**:
-   ```bash
-   docker build -f Dockerfile.prod -t mern-task-prod .
-   ```
-
-2. **Run the production container**:
-   ```bash
-   docker-compose -f docker-compose.prod.yml up
-   ```
-
-3. **Run the production container in detached mode**:
+1. **Run the production container in detached mode without any env file**:
    ```bash
    docker-compose -f docker-compose.prod.yml up -d
    ```
-
-4. **Stop the production container**:
-   ```bash
-   docker-compose -f docker-compose.prod.yml down
-   ```
-
-### Common Docker Commands
-
-- **View running containers**:
-  ```bash
-  docker ps
-  ```
-
-- **View all containers (including stopped ones)**:
-  ```bash
-  docker ps -a
-  ```
-
-- **View container logs**:
-  ```bash
-  docker logs <container_id>
-  ```
-
-- **Execute command in running container**:
-  ```bash
-  docker exec -it <container_id> <command>
-  ```
-
-- **Remove all stopped containers**:
-  ```bash
-  docker container prune
-  ```
-
-- **Remove unused images**:
-  ```bash
-  docker image prune
-  ```
-
-### Environment Variables
-
-The application uses the following environment variables:
-
-- Development: `.env`
-- Production: `.env.prod`
 
 Make sure to set up these files with appropriate values before running the containers.
