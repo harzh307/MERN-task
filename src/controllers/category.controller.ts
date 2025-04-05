@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import mongoose from "mongoose";
 import { Category, ICategory } from "../models/category.model";
-import { AppError } from "../utils/AppError";
 
 // Helper function to build category tree
 const buildCategoryTree = async (
@@ -34,7 +33,10 @@ export const getCategoryById = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    throw new AppError("Error fetching category", 500);
+    res.status(500).json({
+      status: "error",
+      message: "Error fetching category",
+    });
   }
 };
 export const createCategory = async (req: Request, res: Response) => {
@@ -45,7 +47,10 @@ export const createCategory = async (req: Request, res: Response) => {
     if (parentId) {
       const parent = await Category.findById(parentId);
       if (!parent) {
-        throw new AppError("Parent category not found", 404);
+        return res.status(404).json({
+          status: "error",
+          message: "Parent category not found",
+        });
       }
     }
 
@@ -61,10 +66,10 @@ export const createCategory = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    if (error instanceof AppError) {
-      throw error;
-    }
-    throw new AppError("Error creating category", 500);
+    res.status(500).json({
+      status: "error",
+      message: "Error creating category",
+    });
   }
 };
 
@@ -80,7 +85,10 @@ export const getCategories = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    throw new AppError("Error fetching categories", 500);
+    res.status(500).json({
+      status: "error",
+      message: "Error fetching categories",
+    });
   }
 };
 
@@ -91,15 +99,23 @@ export const updateCategory = async (req: Request, res: Response) => {
 
     const category = await Category.findById(id);
     if (!category) {
-      throw new AppError("Category not found", 404);
+      return res.status(404).json({
+        status: "error",
+        message: "Category not found",
+      });
     }
 
     // Update category
     if (name) category.name = name;
-    if (status) {
+    if (status === "active" || status === "inactive") {
       category.status = status;
       // Update all child categories status
       await Category.updateMany({ parent: id }, { status });
+    } else {
+      return res.status(400).json({
+        status: "error",
+        message: "Invalid status",
+      });
     }
 
     await category.save();
@@ -111,10 +127,10 @@ export const updateCategory = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    if (error instanceof AppError) {
-      throw error;
-    }
-    throw new AppError("Error updating category", 500);
+    res.status(500).json({
+      status: "error",
+      message: "Error updating category",
+    });
   }
 };
 
@@ -124,7 +140,10 @@ export const deleteCategory = async (req: Request, res: Response) => {
 
     const category = await Category.findById(id);
     if (!category) {
-      throw new AppError("Category not found", 404);
+      return res.status(404).json({
+        status: "error",
+        message: "Category not found",
+      });
     }
 
     // Get parent category
@@ -138,12 +157,14 @@ export const deleteCategory = async (req: Request, res: Response) => {
 
     res.status(204).json({
       status: "success",
-      data: null,
+      data: {
+        message: "Category deleted successfully",
+      },
     });
   } catch (error) {
-    if (error instanceof AppError) {
-      throw error;
-    }
-    throw new AppError("Error deleting category", 500);
+    res.status(500).json({
+      status: "error",
+      message: "Error deleting category",
+    });
   }
 };

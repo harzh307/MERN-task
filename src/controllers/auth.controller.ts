@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { User, IUser } from "../models/user.model";
-import { AppError } from "../utils/AppError";
 
 interface JwtPayload {
   id: string;
