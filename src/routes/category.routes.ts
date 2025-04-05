@@ -5,6 +5,7 @@ import {
   getCategories,
   updateCategory,
   deleteCategory,
+  getCategoryById,
 } from "../controllers/category.controller";
 import { errorHandler } from "../utils/errorHandler";
 
@@ -15,6 +16,7 @@ router.use(authenticate);
 
 router.post("/", createCategory);
 router.get("/", getCategories);
+router.get("/:id", getCategoryById);
 router.put("/:id", updateCategory);
 router.delete("/:id", deleteCategory);
 

@@ -23,6 +23,20 @@ const buildCategoryTree = async (
   return tree;
 };
 
+export const getCategoryById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const category = await Category.findById(id);
+    res.status(200).json({
+      status: "success",
+      data: {
+        category,
+      },
+    });
+  } catch (error) {
+    throw new AppError("Error fetching category", 500);
+  }
+};
 export const createCategory = async (req: Request, res: Response) => {
   try {
     const { name, parentId } = req.body;
